@@ -85,60 +85,47 @@ for name, t in THEMES.items():
     (OUT / f"header-{name}.svg").write_text(header(t), encoding="utf-8")
 
 
-# ---------------------------------------------------------------- toolbox
-def toolbox(t):
-    W, H = 880, 270
+# ---------------------------------------------------------------- skills
+def skills(t):
+    W, H = 880, 172
     cx = 440
     groups = {"lang": t["sym"], "vision": t["key"], "data": t["str"], "web": t["paren"]}
-    # rows from the top (furthest out of the box) down to just above the lid
     rows = [
-        (78,  [("python", "lang"), ("typescript", "lang"), ("javascript", "lang"), ("java", "lang"),
-               ("c", "lang"), ("c++", "lang"), ("common lisp", "lang")]),
-        (128, [("react", "web"), ("next.js", "web"), ("tailwind", "web"), ("mongodb", "web"),
-               ("prolog", "lang"), ("sql", "lang")]),
-        (176, [("opencv", "vision"), ("mediapipe", "vision"), ("medsam", "vision"),
-               ("numpy", "data"), ("pandas", "data")]),
+        (22, [("python", "lang"), ("typescript", "lang"), ("javascript", "lang"), ("java", "lang"),
+              ("c", "lang"), ("c++", "lang"), ("common lisp", "lang"), ("prolog", "lang"), ("sql", "lang")]),
+        (64, [("opencv", "vision"), ("mediapipe", "vision"), ("medsam", "vision"),
+              ("numpy", "data"), ("pandas", "data")]),
+        (106, [("react", "web"), ("next.js", "web"), ("tailwind", "web"), ("mongodb", "web")]),
     ]
-    cw, pad, gap = 7.4, 22, 12
+    cw, pad, gap = 7.4, 22, 10
 
     def chip(x, y, label, color):
         w = len(label) * cw + pad
-        ang = (x - cx) / 32          # tilt outward, like they're spilling out
-        y = y + ((x - cx) / 250) ** 2 * 26  # outer chips sit lower: a fan
-        return (f'<g transform="rotate({ang:.1f} {x:.0f} {y:.0f})">'
-                f'<rect x="{x - w/2:.0f}" y="{y - 14:.0f}" width="{w:.0f}" height="28" rx="14" '
+        return (f'<rect x="{x - w/2:.0f}" y="{y - 14:.0f}" width="{w:.0f}" height="28" rx="14" '
                 f'fill="{color}" fill-opacity="0.12" stroke="{color}" stroke-opacity="0.7"/>'
                 f'<text x="{x:.0f}" y="{y + 4.5:.0f}" class="mono" font-size="12.5" fill="{color}" '
-                f'text-anchor="middle">{escape(label)}</text></g>')
+                f'text-anchor="middle">{escape(label)}</text>')
 
     chips = []
     for y, items in rows:
         widths = [len(l) * cw + pad for l, _ in items]
-        total = sum(widths) + gap * (len(items) - 1)
-        x = cx - total / 2
+        x = cx - (sum(widths) + gap * (len(items) - 1)) / 2
         for (label, g), w in zip(items, widths):
-            chips.append(chip(x + w / 2, y, label, groups[g]))
+            chips.append(chip(x + w / 2, y + 14, label, groups[g]))
             x += w + gap
 
-    box = t["paren"]
-    body = f"""
-<path d="M352 238 L528 238 L548 206 L332 206 Z" fill="{box}" opacity="0.55"/>
-<path d="M410 206 v-8 a6 6 0 0 1 6 -6 h48 a6 6 0 0 1 6 6 v8" fill="none" stroke="{box}" stroke-width="5" opacity="0.55"/>
-{''.join(chips)}
-<rect x="340" y="236" width="200" height="62" rx="8" fill="{box}"/>
-<rect x="340" y="236" width="200" height="12" rx="4" fill="{t['card']}" opacity="0.18"/>
-<rect x="428" y="256" width="24" height="12" rx="3" fill="{t['card']}" opacity="0.45"/>
-<g class="mono" font-size="12">
-  <circle cx="610" cy="258" r="4" fill="{groups['lang']}"/><text x="620" y="262" fill="{t['soft']}">languages</text>
-  <circle cx="710" cy="258" r="4" fill="{groups['vision']}"/><text x="720" y="262" fill="{t['soft']}">vision</text>
-  <circle cx="610" cy="282" r="4" fill="{groups['data']}"/><text x="620" y="286" fill="{t['soft']}">data</text>
-  <circle cx="710" cy="282" r="4" fill="{groups['web']}"/><text x="720" y="286" fill="{t['soft']}">web</text>
-</g>
-"""
-    return svg(W, H, f'<g transform="translate(0,-40)">{body}</g>', t, card=False)
+    legend = [("languages", "lang"), ("vision", "vision"), ("data", "data"), ("web", "web")]
+    lx = cx - 170
+    keys = []
+    for label, g in legend:
+        keys.append(f'<circle cx="{lx}" cy="158" r="4" fill="{groups[g]}"/>'
+                    f'<text x="{lx + 10}" y="162" class="mono" font-size="12" fill="{t["soft"]}">{label}</text>')
+        lx += len(label) * 7.4 + 40
+    body = "".join(chips) + "".join(keys)
+    return svg(W, H, body, t, card=False)
 
 
 for name, t in THEMES.items():
-    (OUT / f"toolbox-{name}.svg").write_text(toolbox(t), encoding="utf-8")
+    (OUT / f"skills-{name}.svg").write_text(skills(t), encoding="utf-8")
 
 print("wrote", sorted(p.name for p in OUT.iterdir()))
