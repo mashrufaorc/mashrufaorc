@@ -62,9 +62,10 @@ def header(t):
         [("i", "  "), ("p", "'("), ("k", ":based-in  "), ("s", '"Toronto"')],
         [("i", "    "), ("k", ":studying  "), ("s", '"computer science"')],
         [("i", "    "), ("k", ":into      "), ("p", "("), ("i", "robotics  vla-models")],
-        [("i", "                "), ("i", "computer-vision"), ("p", ")))")],
+        [("i", "                "), ("i", "computer-vision")],
+        [("i", "                "), ("i", "medical-imaging"), ("p", ")))")],
     ]
-    x0, y0, lh = 372, 82, 27
+    x0, y0, lh = 372, 70, 27
     rows = []
     for i, toks in enumerate(code):
         spans = "".join('<tspan fill="%s">%s</tspan>' % (c[k], escape(s)) for k, s in toks)
