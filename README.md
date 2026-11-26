@@ -3,12 +3,6 @@
   <img alt="Mashrufa Orchi. Teaching machines to see, understand and act in the real world. Based in Toronto, studying computer science, into robotics, vision-language-action models, computer vision and medical imaging." src="assets/header-light.svg" width="100%">
 </picture>
 
-### Projects
-
-- **[Probe](https://github.com/mashrufaorc/probe)**: tests whether tumour segmentation models still give the right clinical answer when the scanner changes.
-- **[PosePhase](https://github.com/mashrufaorc/PosePhase)**: real-time exercise form analysis from a webcam.
-- **[Parenthesis](https://github.com/mashrufaorc/parenthesis)**: a browser game for learning data structures. [Play it](https://parenthesis-labs.vercel.app/)
-
 ### Skills
 
 <picture>
